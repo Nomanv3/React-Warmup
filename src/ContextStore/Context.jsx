@@ -1,35 +1,53 @@
+import { json } from "react-router-dom";
 import axios from "../Utilis/axios";
 import React, { createContext, useEffect, useState } from "react";
+import { parse } from "postcss";
 
-
-// lets export our contextproduct page to other pages
- export const ContextProduct  = createContext()
+// Export ContextProduct for use in other components
+export const ContextProduct = createContext();
 
 const Context = (props) => {
-// no value is 
-    const [products , setproduct] = useState(null)
-
-    console.log(axios)
-
-  const getprouduct = async () =>{
-try {
-   let {data} = await axios("/products")
-    console.log(data);
-    setproduct(data)
-} catch (error) {
-    console.log(error)
-}
-  }
-
-  useEffect(()=>{
-
-    getprouduct();
-  },[])
+  const [products, setProduct] = useState(
+    null
+  );
 
 
-  return(
-     <ContextProduct.Provider value={[products , setproduct]}>{props.children}</ContextProduct.Provider>
-  )
+   useEffect(()=>{
+    const fetchedprouduct = localStorage.getItem('products')
+
+    if(fetchedprouduct){
+        try {
+          const parseprdt = JSON.parse(fetchedprouduct);
+               setProduct(parseprdt)
+
+        } catch (error) {
+          console.log(error)
+          setProduct([])
+        }
+    }else{
+      setProduct([])
+    }
+   }, [])
+
+
+  // const getProducts = async () => {
+  //   try {
+  //     let { data } = await axios.get("/products");
+  //     setProduct(data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   getProducts();
+  // }, []);
+
+  return (
+    <ContextProduct.Provider value={[products, setProduct]}>
+      {props.children}
+    </ContextProduct.Provider>
+  );
 };
 
 export default Context;
