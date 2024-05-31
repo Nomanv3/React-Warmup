@@ -44,7 +44,7 @@ const Create = () => {
     setProducts(updatedprd);
     // setProducts([...products, product]);
     console.log(products);
-    localStorage.setItem(products, JSON.stringify(updatedprd));
+    localStorage.setItem("products", JSON.stringify(updatedprd));
     navigate("/");
     // toast.success('New product added');
   };

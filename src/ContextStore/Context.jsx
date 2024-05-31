@@ -1,41 +1,38 @@
-import { json } from "react-router-dom";
 import axios from "../Utilis/axios";
 import React, { createContext, useEffect, useState } from "react";
-import { parse } from "postcss";
 
 // Export ContextProduct for use in other components
 export const ContextProduct = createContext();
 
 const Context = (props) => {
-  const [products, setProduct] = useState(
-    null
-  );
+  const [products, setProducts] = useState(null);
+  const fetchedProduct = localStorage.getItem('products');
+
+  console.log(products)
+  console.log(fetchedProduct)
+  useEffect(() => {
 
 
-   useEffect(()=>{
-    const fetchedprouduct = localStorage.getItem('products')
-
-    if(fetchedprouduct){
-        try {
-          const parseprdt = JSON.parse(fetchedprouduct);
-               setProduct(parseprdt)
-
-        } catch (error) {
-          console.log(error)
-          setProduct([])
-        }
-    }else{
-      setProduct([])
+    if (fetchedProduct) {
+      try {
+        const parsedProduct = JSON.parse(fetchedProduct);
+        setProducts(parsedProduct);
+      } catch (error) {
+        console.error("Error parsing products from localStorage:", error);
+        setProducts([]);
+      }
+    } else {
+      setProducts([]);
     }
-   }, [])
+  }, []);
 
-
+  // Uncomment if you want to fetch products from an API in the future
   // const getProducts = async () => {
   //   try {
   //     let { data } = await axios.get("/products");
-  //     setProduct(data);
+  //     setProducts(data);
   //   } catch (error) {
-  //     console.log(error);
+  //     console.error("Error fetching products from API:", error);
   //   }
   // };
 
@@ -44,7 +41,7 @@ const Context = (props) => {
   // }, []);
 
   return (
-    <ContextProduct.Provider value={[products, setProduct]}>
+    <ContextProduct.Provider value={[products, setProducts]}>
       {props.children}
     </ContextProduct.Provider>
   );

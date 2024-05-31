@@ -1,9 +1,14 @@
 import React from 'react'
+import '../App.css'
 
 const Loading = () => {
   return (
     <div className='bg-red-200 w-full h-screen flex items-center justify-center'>
-       <h1 className='5-xl'>Loading...........</h1>
+      <div class="loader">
+    <span class="loader-text">loading</span>
+      <span class="load"></span>
+  </div>
+
     </div>
   )
 }
